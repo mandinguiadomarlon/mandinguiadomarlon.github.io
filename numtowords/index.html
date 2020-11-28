@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>Number to Words Converter</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        margin: auto;
+        margin-top: 20px;
+        align-content: center;
+        text-align: center;
+        padding: 20px;
+        border: 1px solid rgba(0, 0, 0, 0.25);
+        border-radius: 20px;
+      }
+      .container input {
+        margin: 20px;
+        padding: 10px;
+        width: 80%;
+      }
+      .container h5 {
+        margin: 20px;
+      }
+      .container button {
+        margin: 20px;
+      }
+      .container p {
+        font-size: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Convert number to Words</h2>
+      <p>**Note: 0 to Millions ONLY</p>
+      <input id="number" type="text" name="number" value="" placeholder="Type number to convert to words..." onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+      <h5 id="words"></h5>
+      <button id="btn-convert" class="btn btn-primary" type="submit" name="button">Convert</button>
+    </div>
+
+    <script>
+    $(document).ready(function(){
+      $("#btn-convert").click(function(){
+        var number = $("#number").val();
+        $("#words").html(convertNum(number));
+      });
+    });
+
+    var num = "zero one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen".split(" ");
+    var tens = "ten twenty thirty forty fifty sixty seventy eighty ninety".split(" ");
+
+    function convertNum(n){
+      if (n == "") return "type a number to translate";
+      if (n < 20) return num[n];
+      var digit = n%10;
+      if(n < 100) return tens[~~(n/10)-1] + (digit? "-" + num[digit]: "");
+      if(n < 1000) return num[~~(n/100)] + " hundred" + (n%100 == 0? "": " " + convertNum(n%100));
+      if(n < 10000) return num[~~(n/1000)] + " thousand" + (n%1000 == 0? "": " " + convertNum(n%1000));
+      if(n < 100000) return tens[~~(n/10000)-1] + (n%10000 == 0? "thousand": " " + convertNum(n%10000));
+      if(n < 1000000) return num[~~(n/100000)] + " hundred " + (n%100000 == 0? "thousand": " " + convertNum(n%100000));
+      return convertNum(~~(n/1000000)) + " million" + (n%1000000 != 0? " " + convertNum(n%1000000): "");
+    }
+    </script>
+  </body>
+</html>
